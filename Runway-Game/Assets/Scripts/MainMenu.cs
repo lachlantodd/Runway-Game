@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
+    public GameObject music;
+
     public void PlayGame()
     {
         SceneManager.LoadScene(3);
