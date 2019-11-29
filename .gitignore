@@ -1,9 +1,9 @@
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-Assets/AssetStoreTools*
+/Runway-Game/[Ll]ibrary/
+/Runway-Game/[Tt]emp/
+/Runway-Game/[Oo]bj/
+/Runway-Game/[Bb]uild/
+/Runway-Game/[Bb]uilds/
+/Runway-Game/Assets/AssetStoreTools*
 
 # Visual Studio cache directory
 .vs/
