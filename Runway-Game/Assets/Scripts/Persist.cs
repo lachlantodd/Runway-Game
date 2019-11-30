@@ -25,9 +25,9 @@ public class Persist : MonoBehaviour
         audio.Play();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MuteMusic()
     {
-        
+        AudioSource audio = GetComponent<AudioSource>();
+        audio.mute = !audio.mute;
     }
 }
