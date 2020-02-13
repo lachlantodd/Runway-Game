@@ -15,25 +15,36 @@ public class GameController : MonoBehaviour {
     public Rigidbody2D planeRigid;
     private int secondsToGo = 3;
     public GameObject background;
-    AudioSource gameAudio;
+    AudioSource gameAudio, menuAudio;
 
     // Update is called once per frame
 
     private void Start()
     {
+        menuAudio = GameObject.FindWithTag("music").GetComponent<AudioSource>();
+        if (menuAudio != null)
+            menuAudio.Stop();
         gameAudio = GetComponent<AudioSource>();
-        gameAudio.loop = false;
+        if (PlayerPrefs.GetInt("music", 1) == 1)
+        {
+            gameAudio.volume = 1;
+        }
+        else
+        {
+            gameAudio.volume = 0;
+        }
     }
 
     private void FixedUpdate()
     {
         if (gameStarted)
         {
+            if (gameAudio.isPlaying == false)
+                gameAudio.Play();
             if (countdownPage.activeSelf)
             {
                 countdownPage.SetActive(false);
                 planeRigid.simulated = true;
-                gameAudio.Play();
             }
             height = (int)planeTransform.position.z / 10;
             height = height * 10;
@@ -51,6 +62,21 @@ public class GameController : MonoBehaviour {
             StartCoroutine("CountdownTimer");
             countdown = false;
         }
+    }
+
+    public void MuteMusic()
+    {
+        if (gameAudio.volume == 1)
+        {
+            PlayerPrefs.SetInt("music", 0);
+            gameAudio.volume = 0;
+        } 
+        else
+        {
+            PlayerPrefs.SetInt("music", 1);
+            gameAudio.volume = 1;
+        }
+        PlayerPrefs.Save();
     }
 
     private IEnumerator CountdownTimer()

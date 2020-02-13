@@ -4,7 +4,34 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
-    
+
+    AudioSource music;
+
+    public void Awake()
+    {
+        music = GameObject.FindWithTag("music").GetComponent<AudioSource>();
+        if (music != null && !music.isPlaying &&
+            PlayerPrefs.GetInt("music", 1) == 1)
+        {
+            music.Play();
+        }
+    }
+
+    public void MuteMusic()
+    {
+        if (music.isPlaying)
+        {
+            music.Stop();
+            PlayerPrefs.SetInt("music", 0);
+        }
+        else
+        {
+            music.Play();
+            PlayerPrefs.SetInt("music", 1);
+        }
+        PlayerPrefs.Save();
+    }
+
     public void ExitGame()
     {
         Application.Quit();

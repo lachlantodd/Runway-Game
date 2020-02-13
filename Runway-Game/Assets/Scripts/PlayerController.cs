@@ -306,6 +306,7 @@ public class PlayerController : MonoBehaviour {
             highscore = score;
             highscoreText.text = "Best: " + highscore.ToString();
             PlayerPrefs.SetInt("highscore", highscore);
+            PlayerPrefs.Save();
         }
     }
 }

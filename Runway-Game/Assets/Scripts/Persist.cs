@@ -20,14 +20,5 @@ public class Persist : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        AudioSource audio = GetComponent<AudioSource>();
-        audio.loop = true;
-        audio.Play();
-    }
-
-    public void MuteMusic()
-    {
-        AudioSource audio = GetComponent<AudioSource>();
-        audio.mute = !audio.mute;
     }
 }
