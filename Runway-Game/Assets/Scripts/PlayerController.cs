@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-    private Rigidbody2D rigidBody, shadowBody;
+    private Rigidbody2D rigidBody;
     public GameObject shadow;
+    public GameObject arrow;
+    private const float startPositionX = 14;
+    private const float startPositionY = 0;
+    private const float startRotation = 0;
     private float planeRotationInput;
     private const float rotationSpeedButton = 4f;
     private const float rotationSpeedTilt = 8f;
@@ -36,19 +40,25 @@ public class PlayerController : MonoBehaviour {
 
     private void Start()
     {
+        InitialisePlane();
+        InitialiseUI();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckPlane();
+    }
+
+    private void InitialisePlane()
+    {
         rigidBody = GetComponent<Rigidbody2D>();
-        shadowBody = shadow.GetComponent<Rigidbody2D>();
-        highscore = PlayerPrefs.GetInt("highscore", -1);
-        if (highscore >= 0)
-        {
-            highscoreText.text = "Best: " + highscore.ToString();
-        }
         planeType = PlayerPrefs.GetInt("planeType", 0);
         if (planeType == 1)
         {
             planeSprite = planeBlack;
             shadowSprite = planeShadow;
-        } else if (planeType == 2)
+        }
+        else if (planeType == 2)
         {
             planeSprite = shuttle;
             shadowSprite = shuttleShadow;
@@ -60,33 +70,59 @@ public class PlayerController : MonoBehaviour {
         }
         GetComponent<SpriteRenderer>().sprite = planeSprite;
         shadow.GetComponent<SpriteRenderer>().sprite = shadowSprite;
-        inputButtons.SetActive(true);
-        //explosion.Stop();
-        //explosion.Clear();
     }
 
-    private void FixedUpdate()
+    private void InitialiseUI()
     {
-        if (rigidBody.simulated)
+        highscore = PlayerPrefs.GetInt("highscore", -1);
+        if (highscore >= 0)
         {
-            CheckPlane();
+            highscoreText.text = "Best: " + highscore.ToString();
         }
+        inputButtons.SetActive(true);
+        arrow.SetActive(false);
     }
 
     private void CheckPlane()
     {
+        if (!rigidBody.simulated || planeLanded)
+            return;
         planeRotationInput = Input.GetAxisRaw("Horizontal");
         if (transform.position.z >= 0 && planeLanded == false)
         {
             LandPlane();
         }
-        else if (transform.position.z < -1 && planeLanded == false)
+        else
         {
             MovePlane(planeRotationInput);
             ShrinkPlane();
             RotatePlane();
-            updateShadow();
-
+            UpdateShadow();
+            if (transform.position.x <= -20 || transform.position.x >= 20 || transform.position.y <= -13 || transform.position.y >= 13)
+            {
+                arrow.SetActive(true);
+                arrow.transform.position = new Vector2(transform.position.x, transform.position.y);
+                if (arrow.transform.position.x < -15)
+                {
+                    arrow.transform.position = new Vector2(-15, arrow.transform.position.y);
+                }
+                else if (arrow.transform.position.x > 15)
+                {
+                    arrow.transform.position = new Vector2(15, arrow.transform.position.y);
+                }
+                if (arrow.transform.position.y < -6)
+                {
+                    arrow.transform.position = new Vector2(arrow.transform.position.x, -6);
+                }
+                else if (arrow.transform.position.y > 6)
+                {
+                    arrow.transform.position = new Vector2(arrow.transform.position.x, 6);
+                }
+            }
+            else
+            {
+                arrow.SetActive(false);
+            }
         }
     }
 
@@ -115,17 +151,20 @@ public class PlayerController : MonoBehaviour {
         if (pressedLeft)
         {
             transform.Rotate(0, 0, 1 * rotationSpeedButton);
-            shadowBody.transform.Rotate(0, 0, 1 * rotationSpeedButton);
+            shadow.transform.Rotate(0, 0, 1 * rotationSpeedButton);
+            arrow.transform.Rotate(0, 0, 1 * rotationSpeedButton);
         }
         else if (pressedRight)
         {
             transform.Rotate(0, 0, -1 * rotationSpeedButton);
-            shadowBody.transform.Rotate(0, 0, -1 * rotationSpeedButton);
+            shadow.transform.Rotate(0, 0, -1 * rotationSpeedButton);
+            arrow.transform.Rotate(0, 0, -1 * rotationSpeedButton);
         }
         else
         {
-            transform.Rotate(0.0f, 0.0f, -Input.acceleration.x * rotationSpeedTilt);
-            shadowBody.transform.Rotate(0.0f, 0.0f, -Input.acceleration.x * rotationSpeedTilt);
+            transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+            shadow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+            arrow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
         }
     }
 
@@ -133,6 +172,7 @@ public class PlayerController : MonoBehaviour {
     {
         transform.Rotate(0, 0, -planeRotationInput * rotationSpeedButton);
         shadow.transform.Rotate(0, 0, -planeRotationInput * rotationSpeedButton);
+        arrow.transform.Rotate(0, 0, -planeRotationInput * rotationSpeedButton);
         transform.Translate(moveSpeed, 0, fallSpeed);
         moveSpeed += acceleration;
     } 
@@ -153,7 +193,7 @@ public class PlayerController : MonoBehaviour {
         shadow.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
     }
 
-    private void updateShadow()
+    private void UpdateShadow()
     {
         shadowX = transform.position.x + 0.05f + transform.position.z * shadowMoveSpeed / 2;
         shadowY = transform.position.y - 0.05f + transform.position.z * shadowMoveSpeed / 2;
@@ -163,7 +203,7 @@ public class PlayerController : MonoBehaviour {
         shadow.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, shadowAlpha);
     }
 
-    private void CheckPosition()
+    private void CheckLandingPosition()
     {
         if ((transform.position.y <= 0.25 && transform.position.y >= -0.25) && (transform.position.x <= 2.5 && transform.position.x >= -2.5))
         {
@@ -187,7 +227,7 @@ public class PlayerController : MonoBehaviour {
     private void LandPlane()
     {
         moveSpeed += deceleration;
-        CheckPosition();
+        CheckLandingPosition();
         if (!onRunway)
         {
             Explode();
@@ -202,6 +242,7 @@ public class PlayerController : MonoBehaviour {
             planeLanded = true;
             GameOverPage.SetActive(true);
             inputButtons.SetActive(false);
+            arrow.SetActive(false);
             ShowScore();
         }
     }
@@ -212,23 +253,23 @@ public class PlayerController : MonoBehaviour {
         {
             if (transform.position.x <= 2.5 && transform.position.x > 2)
             {
-                score = 1;
+                score = 10;
             }
             else if (transform.position.x <= 2 && transform.position.x > 1.5)
             {
-                score = 2;
+                score = 9;
             }
             else if (transform.position.x <= 1.5 && transform.position.x > 1)
             {
-                score = 3;
+                score = 8;
             }
             else if (transform.position.x <= 1 && transform.position.x > 0.5)
             {
-                score = 4;
+                score = 7;
             }
             else if (transform.position.x <= 0.5 && transform.position.x > 0)
             {
-                score = 5;
+                score = 6;
             }
              else if (transform.position.x <= 0 && transform.position.x > -0.5)
             {
