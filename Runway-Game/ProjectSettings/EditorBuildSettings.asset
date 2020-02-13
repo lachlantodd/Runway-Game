@@ -12,8 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Options Menu.unity
     guid: 27b151c6fe3fb5441b4f233c3fd3cc83
   - enabled: 1
-    path: Assets/Scenes/Game Screen.unity
+    path: Assets/Scenes/Australian Outback.unity
     guid: d46212c6d676b19438c8d90de99d4c09
   - enabled: 1
-    path: Assets/Scenes/Levels.unity
+    path: Assets/Scenes/Levels Menu.unity
     guid: b3fe9b3958150fa4cb9ba1ab84ddbce2
+  m_configObjects: {}
