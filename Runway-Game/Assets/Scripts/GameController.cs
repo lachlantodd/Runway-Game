@@ -15,8 +15,16 @@ public class GameController : MonoBehaviour {
     public Rigidbody2D planeRigid;
     private int secondsToGo = 3;
     public GameObject background;
+    AudioSource gameAudio;
 
     // Update is called once per frame
+
+    private void Start()
+    {
+        gameAudio = GetComponent<AudioSource>();
+        gameAudio.loop = false;
+    }
+
     private void FixedUpdate()
     {
         if (gameStarted)
@@ -25,6 +33,7 @@ public class GameController : MonoBehaviour {
             {
                 countdownPage.SetActive(false);
                 planeRigid.simulated = true;
+                gameAudio.Play();
             }
             height = (int)planeTransform.position.z / 10;
             height = height * 10;

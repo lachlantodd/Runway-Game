@@ -8,7 +8,7 @@ public class Persist : MonoBehaviour
     {
         get { return instance; }
     }
-    // Start is called before the first frame update
+
     void Awake()
     {
         if (instance != null && instance != this)
