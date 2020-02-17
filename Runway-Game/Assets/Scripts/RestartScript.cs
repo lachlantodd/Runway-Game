@@ -4,11 +4,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class RestartScript : MonoBehaviour {
-	public void RestartGame()
+public class RestartScript : MonoBehaviour 
+{
+    private int level;
+
+    private void Start()
     {
-        SceneManager.LoadScene(2);
+        level = PlayerPrefs.GetInt("level", 1);
     }
+
+	public void RestartLevel()
+    {
+        SceneManager.LoadScene(3);
+    }
+
     public void ReturnToMenu()
     {
         SceneManager.LoadScene(0);

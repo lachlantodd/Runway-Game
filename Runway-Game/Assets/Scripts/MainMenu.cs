@@ -9,9 +9,9 @@ public class MainMenu : MonoBehaviour {
 
     public void Awake()
     {
-        music = GameObject.FindWithTag("music").GetComponent<AudioSource>();
-        if (music != null && !music.isPlaying &&
-            PlayerPrefs.GetInt("music", 1) == 1)
+        if (GameObject.FindWithTag("music") != null)
+            music = GameObject.FindWithTag("music").GetComponent<AudioSource>();
+        if (music != null && !music.isPlaying && PlayerPrefs.GetInt("music", 1) == 1)
         {
             music.Play();
         }
@@ -19,12 +19,12 @@ public class MainMenu : MonoBehaviour {
 
     public void MuteMusic()
     {
-        if (music.isPlaying)
+        if (music != null && music.isPlaying)
         {
             music.Stop();
             PlayerPrefs.SetInt("music", 0);
         }
-        else
+        else if (music != null)
         {
             music.Play();
             PlayerPrefs.SetInt("music", 1);
@@ -38,28 +38,31 @@ public class MainMenu : MonoBehaviour {
         //UnityEditor.EditorApplication.isPlaying = false;
     }
 
-    public void PlayGame()
-    {
-        SceneManager.LoadScene(3);
-    }
-
-    public void OpenOptions()
+    public void OpenLevels()
     {
         SceneManager.LoadScene(1);
     }
+
+    public void OpenSkins()
+    {
+        SceneManager.LoadScene(2);
+    }
+
     public void SelectLevel1()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
         PlayerPrefs.SetInt("level", 1);
     }
+
     public void SelectLevel2()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
         PlayerPrefs.SetInt("level", 2);
     }
+
     public void SelectLevel3()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
         PlayerPrefs.SetInt("level", 3);
     }
 }

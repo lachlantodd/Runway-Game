@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameController gameController;
     private Rigidbody2D rigidBody;
-    public GameObject shadow;
-    public GameObject arrow;
     private const float startPositionX = 14;
     private const float startPositionY = 0;
     private const float startRotation = 0;
@@ -24,17 +23,18 @@ public class PlayerController : MonoBehaviour {
     private float shadowMoveSpeed = 0.035f;
     private float shadowAlpha = 1f;
     private bool planeLanded;
+    private bool onRunway;
     private bool pressedLeft, pressedRight;
     public GameObject GameOverPage;
     public GameObject inputButtons;
-    public Text scoreText, highscoreText;
-    private static int score, highscore;
-    private int planeType;
+    public Text scoreText, highscoreText, tenPointText;
+    private static int score, highscore, tenPointLandings;
+    private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite, shadowSprite;
-    public Sprite planeWhite, planeBlack;
-    public Sprite shuttle;
-    public Sprite planeShadow, shuttleShadow;
-    private bool onRunway;
+    public Sprite planeWhite, planeBlack, jetGrey, jetBlack, shuttleWhite, shuttleBlack;
+    public Sprite planeShadow, jetShadow, shuttleShadow;
+    public GameObject shadow;
+    public GameObject arrow;
     public ParticleSystem explosion;
 
 
@@ -52,21 +52,38 @@ public class PlayerController : MonoBehaviour {
     private void InitialisePlane()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        planeType = PlayerPrefs.GetInt("planeType", 0);
-        if (planeType == 1)
+
+        // Applying a plane skin depending on the user's selection
+        level = PlayerPrefs.GetInt("level", 1);
+        plane1Type = PlayerPrefs.GetInt("plane1", 0);
+        plane2Type = PlayerPrefs.GetInt("plane2", 0);
+        plane3Type = PlayerPrefs.GetInt("plane3", 0);
+        switch (level)
         {
-            planeSprite = planeBlack;
-            shadowSprite = planeShadow;
-        }
-        else if (planeType == 2)
-        {
-            planeSprite = shuttle;
-            shadowSprite = shuttleShadow;
-        }
-        else
-        {
-            planeSprite = planeWhite;
-            shadowSprite = planeShadow;
+            default:
+            case 1:
+                if (plane1Type == 1)
+                    planeSprite = planeBlack;
+                else
+                    planeSprite = planeWhite;
+                shadowSprite = planeShadow;
+                break;
+
+            case 2:
+                if (plane2Type == 1)
+                    planeSprite = jetBlack;
+                else
+                    planeSprite = jetGrey;
+                shadowSprite = jetShadow;
+                break;
+
+            case 3:
+                if (plane3Type == 1)
+                    planeSprite = shuttleBlack;
+                else
+                    planeSprite = shuttleWhite;
+                shadowSprite = shuttleShadow;
+                break;
         }
         GetComponent<SpriteRenderer>().sprite = planeSprite;
         shadow.GetComponent<SpriteRenderer>().sprite = shadowSprite;
@@ -74,11 +91,26 @@ public class PlayerController : MonoBehaviour {
 
     private void InitialiseUI()
     {
-        highscore = PlayerPrefs.GetInt("highscore", -1);
-        if (highscore >= 0)
+        switch (level)
         {
-            highscoreText.text = "Best: " + highscore.ToString();
+            default:
+            case 1:
+                highscore = PlayerPrefs.GetInt("highscore1", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0);
+                break;
+
+            case 2:
+                highscore = PlayerPrefs.GetInt("highscore2", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0);
+                break;
+
+            case 3:
+                highscore = PlayerPrefs.GetInt("highscore3", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0);
+                break;
         }
+        highscoreText.text = "Best: " + highscore.ToString();
+        tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
         inputButtons.SetActive(true);
         arrow.SetActive(false);
     }
@@ -244,6 +276,7 @@ public class PlayerController : MonoBehaviour {
             inputButtons.SetActive(false);
             arrow.SetActive(false);
             ShowScore();
+            gameController.EndMusic();
         }
     }
 
@@ -304,9 +337,47 @@ public class PlayerController : MonoBehaviour {
         if (score > highscore || highscore < 0)
         {
             highscore = score;
-            highscoreText.text = "Best: " + highscore.ToString();
-            PlayerPrefs.SetInt("highscore", highscore);
-            PlayerPrefs.Save();
+            highscoreText.text = "Best Score: " + highscore.ToString();
+            switch (level)
+            {
+                default:
+                case 1:
+                    PlayerPrefs.SetInt("highscore1", highscore);
+                    break;
+
+                case 2:
+                    PlayerPrefs.SetInt("highscore2", highscore);
+                    break;
+
+                case 3:
+                    PlayerPrefs.SetInt("highscore3", highscore);
+                    break;
+            }
         }
+        if (score == 10)
+        {
+            switch (level)
+            {
+                default:
+                case 1:
+                    tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0) + 1;
+                    tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                    PlayerPrefs.SetInt("10PointLandings1", tenPointLandings);
+                    break;
+
+                case 2:
+                    tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0) + 1;
+                    tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                    PlayerPrefs.SetInt("10PointLandings2", tenPointLandings);
+                    break;
+
+                case 3:
+                    tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0) + 1;
+                    tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                    PlayerPrefs.SetInt("10PointLandings3", tenPointLandings);
+                    break;
+            }
+        }
+        PlayerPrefs.Save();
     }
 }

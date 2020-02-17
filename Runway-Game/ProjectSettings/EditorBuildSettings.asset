@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: d9c6a14fa60cc2a40adc12b18fbfc846
   - enabled: 1
-    path: Assets/Scenes/Options Menu.unity
-    guid: 27b151c6fe3fb5441b4f233c3fd3cc83
-  - enabled: 1
-    path: Assets/Scenes/Australian Outback.unity
-    guid: d46212c6d676b19438c8d90de99d4c09
-  - enabled: 1
     path: Assets/Scenes/Levels Menu.unity
     guid: b3fe9b3958150fa4cb9ba1ab84ddbce2
+  - enabled: 1
+    path: Assets/Scenes/Skin Selection.unity
+    guid: 36aa40cc0c7ab01408fa02bcd7a2f058
+  - enabled: 1
+    path: Assets/Scenes/Game Screen.unity
+    guid: d46212c6d676b19438c8d90de99d4c09
   m_configObjects: {}

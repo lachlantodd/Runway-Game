@@ -13,15 +13,17 @@ public class GameController : MonoBehaviour {
     private bool countdown = true;
     public GameObject countdownPage;
     public Rigidbody2D planeRigid;
-    private int secondsToGo = 3;
+    private int secondsToGo = 3, timeToGo = 2;
     public GameObject background;
     AudioSource gameAudio, menuAudio;
+    private int loops = 0;
 
     // Update is called once per frame
 
     private void Start()
     {
-        menuAudio = GameObject.FindWithTag("music").GetComponent<AudioSource>();
+        if (GameObject.FindWithTag("music") != null)
+            menuAudio = GameObject.FindWithTag("music").GetComponent<AudioSource>();
         if (menuAudio != null)
             menuAudio.Stop();
         gameAudio = GetComponent<AudioSource>();
@@ -39,7 +41,7 @@ public class GameController : MonoBehaviour {
     {
         if (gameStarted)
         {
-            if (gameAudio.isPlaying == false)
+            if (gameAudio != null && gameAudio.isPlaying == false && loops == 0)
                 gameAudio.Play();
             if (countdownPage.activeSelf)
             {
@@ -66,17 +68,41 @@ public class GameController : MonoBehaviour {
 
     public void MuteMusic()
     {
-        if (gameAudio.volume == 1)
+        if (gameAudio != null && gameAudio.volume == 1)
         {
             PlayerPrefs.SetInt("music", 0);
             gameAudio.volume = 0;
         } 
-        else
+        else if (gameAudio != null)
         {
             PlayerPrefs.SetInt("music", 1);
             gameAudio.volume = 1;
         }
         PlayerPrefs.Save();
+    }
+
+    public void EndMusic()
+    {
+        loops = 1;
+        StartCoroutine("MusicTimer");
+    }
+
+    private IEnumerator MusicTimer()
+    {
+        for (;;)
+        {
+            if (timeToGo > 0)
+            {
+                countdownText.text = secondsToGo.ToString();
+                timeToGo -= 1;
+                yield return new WaitForSeconds(1);
+            }
+            else
+            {
+                gameAudio.Stop();
+                yield return null;
+            }
+        }
     }
 
     private IEnumerator CountdownTimer()
