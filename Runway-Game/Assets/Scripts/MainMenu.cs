@@ -32,6 +32,16 @@ public class MainMenu : MonoBehaviour {
         PlayerPrefs.Save();
     }
 
+    public void OpenHelpMenu()
+    {
+        SceneManager.LoadScene(4);
+    }
+
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void ExitGame()
     {
         Application.Quit();
