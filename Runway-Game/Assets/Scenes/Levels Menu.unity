@@ -1684,7 +1684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 351.3, y: -185.5}
+  m_AnchoredPosition: {x: 344.3, y: -187.9}
   m_SizeDelta: {x: 128.26, y: 48.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1343480435
@@ -2266,6 +2266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1766217730}
   - component: {fileID: 1766217731}
+  - component: {fileID: 1766217732}
   m_Layer: 5
   m_Name: Main Menu
   m_TagString: GameController
@@ -2321,6 +2322,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23b80a819280fd4a8ba6fe7c2343708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1766217732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766217729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8efcb953938f95498eed820a478670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carrierButton: {fileID: 1293953573}
+  spaceButton: {fileID: 998826515}
+  carrierText: {fileID: 71388085}
+  carrierCount: {fileID: 1928690785}
+  spaceText: {fileID: 1574943724}
+  spaceCount: {fileID: 1343480433}
 --- !u!1 &1885695063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,7 +2533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 63.1, y: -187.9}
+  m_AnchoredPosition: {x: 64.13, y: -187.9}
   m_SizeDelta: {x: 128.26, y: 48.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1928690787

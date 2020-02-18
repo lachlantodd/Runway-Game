@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    AudioSource music;
+    private AudioSource music;
 
-    public void Awake()
+    private void Awake()
     {
         if (GameObject.FindWithTag("music") != null)
             music = GameObject.FindWithTag("music").GetComponent<AudioSource>();

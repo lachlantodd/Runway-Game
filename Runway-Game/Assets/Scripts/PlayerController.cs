@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject GameOverPage;
     public GameObject inputButtons;
     public Text scoreText, highscoreText, tenPointText;
-    private static int score, highscore, tenPointLandings;
+    private static int score, highscore, tenPointLandings, totalLandings;
     private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite, shadowSprite;
     public Sprite planeWhite, planeBlack, jetGrey, jetBlack, shuttleWhite, shuttleBlack;
@@ -47,6 +47,30 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate()
     {
         CheckPlane();
+        CheckRunway();
+    }
+
+    private void CheckRunway()
+    {
+        if (level == 0)
+        {
+            level = PlayerPrefs.GetInt("level", 1);
+        }
+        switch (level)
+        {
+            default:
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+        }
     }
 
     private void InitialisePlane()
@@ -97,16 +121,19 @@ public class PlayerController : MonoBehaviour {
             case 1:
                 highscore = PlayerPrefs.GetInt("highscore1", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0);
+                totalLandings = PlayerPrefs.GetInt("landings1", 0);
                 break;
 
             case 2:
                 highscore = PlayerPrefs.GetInt("highscore2", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0);
+                totalLandings = PlayerPrefs.GetInt("landings2", 0);
                 break;
 
             case 3:
                 highscore = PlayerPrefs.GetInt("highscore3", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0);
+                totalLandings = PlayerPrefs.GetInt("landings3", 0);
                 break;
         }
         highscoreText.text = "Best: " + highscore.ToString();
@@ -333,51 +360,57 @@ public class PlayerController : MonoBehaviour {
         {
             score = 0;
         }
-        scoreText.text = "Score: " + score.ToString();
-        if (score > highscore || highscore < 0)
+        totalLandings++;
+        switch (level)
         {
-            highscore = score;
-            highscoreText.text = "Best Score: " + highscore.ToString();
-            switch (level)
-            {
-                default:
-                case 1:
+            default:
+            case 1:
+                if (score > highscore || highscore < 0)
+                {
                     PlayerPrefs.SetInt("highscore1", highscore);
-                    break;
-
-                case 2:
-                    PlayerPrefs.SetInt("highscore2", highscore);
-                    break;
-
-                case 3:
-                    PlayerPrefs.SetInt("highscore3", highscore);
-                    break;
-            }
-        }
-        if (score == 10)
-        {
-            switch (level)
-            {
-                default:
-                case 1:
+                }
+                if (score == 10)
+                {
                     tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0) + 1;
                     tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
                     PlayerPrefs.SetInt("10PointLandings1", tenPointLandings);
-                    break;
+                }
+                PlayerPrefs.SetInt("landings1", totalLandings);
+                break;
 
-                case 2:
+            case 2:
+                if (score > highscore || highscore < 0)
+                {
+                    PlayerPrefs.SetInt("highscore2", highscore);
+                    highscore = score;
+                    highscoreText.text = "Best Score: " + highscore.ToString();
+                }
+                if (score == 10)
+                {
                     tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0) + 1;
                     tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
                     PlayerPrefs.SetInt("10PointLandings2", tenPointLandings);
-                    break;
+                }
+                PlayerPrefs.SetInt("landings2", totalLandings);
+                break;
 
-                case 3:
+            case 3:
+                if (score > highscore || highscore < 0)
+                {
+                    PlayerPrefs.SetInt("highscore3", highscore);
+                    highscore = score;
+                    highscoreText.text = "Best Score: " + highscore.ToString();
+                }
+                if (score == 10)
+                {
                     tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0) + 1;
                     tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
                     PlayerPrefs.SetInt("10PointLandings3", tenPointLandings);
-                    break;
-            }
+                }
+                PlayerPrefs.SetInt("landings3", totalLandings);
+                break;
         }
+        scoreText.text = "Score: " + score.ToString();
         PlayerPrefs.Save();
     }
 }

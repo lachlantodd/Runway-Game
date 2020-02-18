@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour {
     private bool countdown = true;
     public GameObject countdownPage;
     public Rigidbody2D planeRigid;
-    private int secondsToGo = 3, timeToGo = 2;
+    private int secondsToGo = 3, timeToGo = 3;
     public GameObject background;
     AudioSource gameAudio, menuAudio;
     private int loops = 0;
