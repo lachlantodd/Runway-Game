@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         InitialisePlane();
-        InitialiseUI(); 
+        InitialiseUI();
         tiltStatus = PlayerPrefs.GetInt("tiltEnabled", 0);
     }
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
         //startPositionX = 0;
         //startPositionY = 0;
-        transform.position = new Vector3(Random.Range(10.0f, 14.0f), Random.Range(-4.0f, 4.0f), -1000);
+        transform.position = new Vector3(Random.Range(10.0f, 12.0f), Random.Range(-3.0f, 3.0f), -1000);
         if (transform.position.y > 0)
             transform.Rotate(0, 0, Random.Range(0.0f, 45.0f));
         else
@@ -167,8 +167,10 @@ public class PlayerController : MonoBehaviour
                 totalLandings = PlayerPrefs.GetInt("landings3", 0);
                 break;
         }
-        highscoreText.text = "Best Score: " + highscore.ToString();
-        tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+        if (highscore < 10)
+            highscoreText.text = "Best Score: " + highscore.ToString();
+        else
+            highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
         totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
         inputButtons.SetActive(true);
         arrow.SetActive(false);
@@ -355,9 +357,8 @@ public class PlayerController : MonoBehaviour
             // Converting the plane's global position and rotation to local equivalents relative to the runway
             planePositionRel = runway.InverseTransformPoint(transform.position);
             planeRotationRel = transform.rotation.eulerAngles.z - runway.rotation.eulerAngles.z;
+
             totalLandings++;
-            print(planePositionRel.x);
-            print(planeRotationRel);
             switch (level)
             {
                 default:
@@ -365,12 +366,11 @@ public class PlayerController : MonoBehaviour
                     if (planeRotationRel < 90 || planeRotationRel > 270)
                     {
                         // Determining the zone (hence points) the plane landed in
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i <= 10; i++)
                         {
                             if (planePositionRel.x > (2.51f - (0.502f * i)))
                             {
-                                score = i + 1;
-                                print("i: " + i);
+                                score = i;
                                 break;
                             }
                         }
@@ -378,30 +378,27 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         // Determining the zone (hence points) the plane landed in
-                        for (int i = 0; i < 9; i++)
+                        for (int i = 0; i <= 10; i++)
                         {
                             if (planePositionRel.x < (-2.51 + (0.502 * i)))
                             {
-                                score = i + 1;
+                                score = i;
                                 print("i: " + i);
                                 break;
                             }
-                            else
-                            {
-
-                            }
                         }
                     }
-                    if (score > highscore || highscore < 0)
+                    if (score > highscore)
                     {
                         highscore = score;
                         PlayerPrefs.SetInt("highscore1", highscore);
-                        highscoreText.text = "Best Score: " + highscore.ToString();
+                        if (highscore < 10)
+                            highscoreText.text = "Best Score: " + highscore.ToString();
                     }
                     if (score == 10)
                     {
                         tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0) + 1;
-                        tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                        highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
                         PlayerPrefs.SetInt("10PointLandings1", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings1", totalLandings);
@@ -409,16 +406,41 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case 2:
+                    if (planeRotationRel < 90 || planeRotationRel > 270)
+                    {
+                        // Determining the zone (hence points) the plane landed in
+                        for (int i = 0; i <= 10; i++)
+                        {
+                            if (planePositionRel.x > (2.51f - (0.502f * i)))
+                            {
+                                score = i;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Determining the zone (hence points) the plane landed in
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            if (planePositionRel.x < (-2.51 + (0.502 * i)))
+                            {
+                                score = i;
+                                break;
+                            }
+                        }
+                    }
                     if (score > highscore || highscore < 0)
                     {
                         highscore = score;
                         PlayerPrefs.SetInt("highscore2", highscore);
-                        highscoreText.text = "Best Score: " + highscore.ToString();
+                        if (highscore < 10)
+                            highscoreText.text = "Best Score: " + highscore.ToString();
                     }
                     if (score == 10)
                     {
                         tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0) + 1;
-                        tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                        highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
                         PlayerPrefs.SetInt("10PointLandings2", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings2", totalLandings);
@@ -426,24 +448,49 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case 3:
+                    if (planeRotationRel < 90 || planeRotationRel > 270)
+                    {
+                        // Determining the zone (hence points) the plane landed in
+                        for (int i = 0; i <= 10; i++)
+                        {
+                            if (planePositionRel.x > (2.51f - (0.502f * i)))
+                            {
+                                score = i;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Determining the zone (hence points) the plane landed in
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            if (planePositionRel.x < (-2.51 + (0.502 * i)))
+                            {
+                                score = i;
+                                break;
+                            }
+                        }
+                    }
                     if (score > highscore || highscore < 0)
                     {
                         highscore = score;
                         PlayerPrefs.SetInt("highscore3", highscore);
-                        highscoreText.text = "Best Score: " + highscore.ToString();
+                        if (highscore < 10)
+                            highscoreText.text = "Best Score: " + highscore.ToString();
                     }
                     if (score == 10)
                     {
                         tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0) + 1;
-                        tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+                        highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
                         PlayerPrefs.SetInt("10PointLandings3", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings3", totalLandings);
                     totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
                     break;
             }
+            PlayerPrefs.Save();
         }
         scoreText.text = "Score: " + score.ToString();
-        PlayerPrefs.Save();
     }
 }
