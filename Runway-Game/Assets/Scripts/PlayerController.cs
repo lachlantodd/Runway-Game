@@ -39,9 +39,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI highscoreText, tenPointText, totalLandingsText;
     private static int score, highscore, tenPointLandings, totalLandings;
     private int level, plane1Type, plane2Type, plane3Type;
-    private Sprite planeSprite, shadowSprite;
+    private Sprite planeSprite;
     public Sprite planeWhite, planeBlack, jetGrey, jetBlack, shuttleWhite, shuttleBlack;
-    public Sprite planeShadow, jetShadow, shuttleShadow;
     public GameObject shadow;
     public GameObject arrow;
     public ParticleSystem explosion;
@@ -99,7 +98,6 @@ public class PlayerController : MonoBehaviour
                     planeSprite = planeBlack;
                 else
                     planeSprite = planeWhite;
-                shadowSprite = planeShadow;
                 aircraftCollider = planeCollider;
                 this.planeCollider.enabled = true;
                 this.jetCollider.enabled = false;
@@ -111,7 +109,6 @@ public class PlayerController : MonoBehaviour
                     planeSprite = jetBlack;
                 else
                     planeSprite = jetGrey;
-                shadowSprite = jetShadow;
                 aircraftCollider = jetCollider;
                 this.planeCollider.enabled = false;
                 this.jetCollider.enabled = true;
@@ -123,7 +120,6 @@ public class PlayerController : MonoBehaviour
                     planeSprite = shuttleBlack;
                 else
                     planeSprite = shuttleWhite;
-                shadowSprite = shuttleShadow;
                 aircraftCollider = shuttleCollider;
                 this.planeCollider.enabled = false;
                 this.jetCollider.enabled = false;
@@ -131,7 +127,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         GetComponent<SpriteRenderer>().sprite = planeSprite;
-        shadow.GetComponent<SpriteRenderer>().sprite = shadowSprite;
+        shadow.GetComponent<SpriteRenderer>().sprite = planeSprite;
 
         //startPositionX = 0;
         //startPositionY = 0;
@@ -298,7 +294,7 @@ public class PlayerController : MonoBehaviour
         shadowZ = transform.position.z;
         shadow.transform.position = new Vector3(shadowX, shadowY, shadowZ);
         shadowAlpha = 0.75f / (-transform.position.z / 40);
-        shadow.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, shadowAlpha);
+        shadow.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, shadowAlpha);
     }
 
     private void CheckLandingPosition()

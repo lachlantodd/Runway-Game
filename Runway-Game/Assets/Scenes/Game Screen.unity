@@ -179,7 +179,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 4f1ed6270e450ea4aad93cd370aa6ab4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72172d092e3c90444961def1bcc33e1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -259,9 +259,6 @@ MonoBehaviour:
   jetBlack: {fileID: 21300000, guid: 7eb997c965414944cb99a9576964c0d6, type: 3}
   shuttleWhite: {fileID: 21300000, guid: 7dedc653859641742892b50a81f78b9a, type: 3}
   shuttleBlack: {fileID: 21300000, guid: 32a5e154b29f0c84fbb38610ce777106, type: 3}
-  planeShadow: {fileID: 21300000, guid: e3af9297397d096418d532223397fa00, type: 3}
-  jetShadow: {fileID: 21300000, guid: 621d7db4710e01c4c92bf04b57a02f30, type: 3}
-  shuttleShadow: {fileID: 21300000, guid: 9a3cac491c4a0a741bfcaab9a42f9f73, type: 3}
   shadow: {fileID: 1748341925}
   arrow: {fileID: 702303210}
   explosion: {fileID: 1316984114}
@@ -7524,7 +7521,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e3af9297397d096418d532223397fa00, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
