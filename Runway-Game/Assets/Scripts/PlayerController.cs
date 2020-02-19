@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     private float shadowMoveSpeed = 0.035f;
     private float shadowAlpha = 1f;
     public Transform runway;
-    public BoxCollider2D runwayBounds;
+    private BoxCollider2D runwayBounds;
+    public BoxCollider2D runway1Bounds, runway2Bounds, runway3Bounds;
     private Vector2 planePositionRel;
     private float planeRotationRel;
     public BoxCollider2D planeCollider, jetCollider, shuttleCollider;
@@ -47,9 +48,11 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        InitialisePlane();
-        InitialiseUI();
+        level = PlayerPrefs.GetInt("level", 1);
         tiltStatus = PlayerPrefs.GetInt("tiltEnabled", 0);
+        InitialiseUI();
+        InitialisePlane();
+        InitialiseRunway();
     }
 
     private void FixedUpdate()
@@ -81,12 +84,43 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void InitialiseUI()
+    {
+        switch (level)
+        {
+            default:
+            case 1:
+                highscore = PlayerPrefs.GetInt("highscore1", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0);
+                totalLandings = PlayerPrefs.GetInt("landings1", 0);
+                break;
+
+            case 2:
+                highscore = PlayerPrefs.GetInt("highscore2", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0);
+                totalLandings = PlayerPrefs.GetInt("landings2", 0);
+                break;
+
+            case 3:
+                highscore = PlayerPrefs.GetInt("highscore3", 0);
+                tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0);
+                totalLandings = PlayerPrefs.GetInt("landings3", 0);
+                break;
+        }
+        if (highscore < 10)
+            highscoreText.text = "Best Score: " + highscore.ToString();
+        else
+            highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
+        totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
+        inputButtons.SetActive(true);
+        arrow.SetActive(false);
+    }
+
     private void InitialisePlane()
     {
         rigidBody = GetComponent<Rigidbody2D>();
 
         // Applying a plane skin depending on the user's selection
-        level = PlayerPrefs.GetInt("level", 1);
         plane1Type = PlayerPrefs.GetInt("plane1", 0);
         plane2Type = PlayerPrefs.GetInt("plane2", 0);
         plane3Type = PlayerPrefs.GetInt("plane3", 0);
@@ -143,36 +177,14 @@ public class PlayerController : MonoBehaviour
         arrow.transform.Rotate(0, 0, 90);
     }
 
-    private void InitialiseUI()
+    private void InitialiseRunway()
     {
-        switch (level)
-        {
-            default:
-            case 1:
-                highscore = PlayerPrefs.GetInt("highscore1", 0);
-                tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0);
-                totalLandings = PlayerPrefs.GetInt("landings1", 0);
-                break;
-
-            case 2:
-                highscore = PlayerPrefs.GetInt("highscore2", 0);
-                tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0);
-                totalLandings = PlayerPrefs.GetInt("landings2", 0);
-                break;
-
-            case 3:
-                highscore = PlayerPrefs.GetInt("highscore3", 0);
-                tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0);
-                totalLandings = PlayerPrefs.GetInt("landings3", 0);
-                break;
-        }
-        if (highscore < 10)
-            highscoreText.text = "Best Score: " + highscore.ToString();
+        if (level == 2)
+            runwayBounds = runway2Bounds;
+        else if (level == 3)
+            runwayBounds = runway3Bounds;
         else
-            highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
-        totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
-        inputButtons.SetActive(true);
-        arrow.SetActive(false);
+            runwayBounds = runway1Bounds;
     }
 
     private void CheckPlane()
