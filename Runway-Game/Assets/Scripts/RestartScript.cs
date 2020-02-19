@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class RestartScript : MonoBehaviour 
+public class RestartScript : MonoBehaviour
 {
     private int level;
 
@@ -13,7 +13,7 @@ public class RestartScript : MonoBehaviour
         level = PlayerPrefs.GetInt("level", 1);
     }
 
-	public void RestartLevel()
+    public void RestartLevel()
     {
         SceneManager.LoadScene(3);
     }

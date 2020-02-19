@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class SkinsMenu : MonoBehaviour {
+public class SkinsMenu : MonoBehaviour
+{
 
     private static int planeType1, planeType2, planeType3;
     private static int tenPointLandingslvl1, tenPointLandingslvl2, tenPointLandingslvl3;

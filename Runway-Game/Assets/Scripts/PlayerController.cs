@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public GameController gameController;
     private Rigidbody2D rigidBody;
-    private const float startPositionX = 14;
-    private const float startPositionY = 0;
-    private const float startRotation = 0;
+    //private const float startPositionX = 14;
+    //private const float startPositionY = 0;
+    //private const float startRotation = 0;
+    private Quaternion startRotation;
     private float planeRotationInput;
     private const float rotationSpeedButton = 4f;
     private const float rotationSpeedTilt = 8f;
@@ -130,6 +130,16 @@ public class PlayerController : MonoBehaviour {
         }
         GetComponent<SpriteRenderer>().sprite = planeSprite;
         shadow.GetComponent<SpriteRenderer>().sprite = shadowSprite;
+
+        //startPositionX = 0;
+        //startPositionY = 0;
+        transform.position = new Vector3(Random.Range(10.0f, 14.0f), Random.Range(-4.0f, 4.0f), -1000);
+        if (transform.position.y > 0)
+            transform.Rotate(0, 0, Random.Range(0.0f, 45.0f));
+        else
+            transform.Rotate(0, 0, Random.Range(270.0f, 315.0f));
+        shadow.transform.position = transform.position;
+        shadow.transform.rotation = transform.rotation;
     }
 
     private void InitialiseUI()
@@ -254,7 +264,7 @@ public class PlayerController : MonoBehaviour {
         arrow.transform.Rotate(0, 0, -planeRotationInput * rotationSpeedButton);
         transform.Translate(moveSpeed, 0, fallSpeed);
         moveSpeed += acceleration;
-    } 
+    }
 
     // Gives the appearance of the plane falling
     private void ShrinkPlane()

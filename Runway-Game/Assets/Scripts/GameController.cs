@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
 
     public Transform planeTransform;
     public TextMeshProUGUI heightText;
@@ -89,7 +90,7 @@ public class GameController : MonoBehaviour {
         {
             PlayerPrefs.SetInt("music", 0);
             gameAudio.volume = 0;
-        } 
+        }
         else if (gameAudio != null)
         {
             PlayerPrefs.SetInt("music", 1);
@@ -107,7 +108,7 @@ public class GameController : MonoBehaviour {
     // Timer to stop the music looping after a landing
     private IEnumerator MusicTimer()
     {
-        for (;;)
+        for (; ; )
         {
             if (timeToGo > 0)
             {
@@ -126,7 +127,7 @@ public class GameController : MonoBehaviour {
     // Countdown before the game starts after user presses play
     private IEnumerator CountdownTimer()
     {
-        for (;;)
+        for (; ; )
         {
             if (secondsToGo > 0)
             {

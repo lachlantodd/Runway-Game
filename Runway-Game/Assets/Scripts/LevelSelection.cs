@@ -16,7 +16,8 @@ public class LevelSelection : MonoBehaviour
     public Sprite runwayLevel2;
     public Sprite runwayLevel3;
 
-    void Start () {
+    void Start()
+    {
         level = PlayerPrefs.GetInt("level", 1);
         switch (level)
         {
