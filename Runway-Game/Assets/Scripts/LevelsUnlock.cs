@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelsUnlock : MonoBehaviour
 {
@@ -18,8 +17,7 @@ public class LevelsUnlock : MonoBehaviour
     {
         totalLandings1 = PlayerPrefs.GetInt("landings1", 0);
         totalLandings2 = PlayerPrefs.GetInt("landings2", 0);
-        totalLandings3 = PlayerPrefs.GetInt("landings3", 0);
-        if (totalLandings1 > 3)
+        if (totalLandings1 >= 3)
         {
             carrierButton.interactable = true;
             carrierText.SetActive(false);
@@ -30,8 +28,9 @@ public class LevelsUnlock : MonoBehaviour
             carrierButton.interactable = false;
             carrierText.SetActive(true);
             carrierCount.SetActive(true);
+            carrierCount.GetComponent<TextMeshProUGUI>().text = "(" + (3 - totalLandings1) + " left)";
         }
-        if (totalLandings2 > 3)
+        if (totalLandings2 >= 3)
         {
             spaceButton.interactable = true;
             spaceText.SetActive(false);
@@ -42,6 +41,7 @@ public class LevelsUnlock : MonoBehaviour
             spaceButton.interactable = false;
             spaceText.SetActive(true);
             spaceCount.SetActive(true);
+            spaceCount.GetComponent<TextMeshProUGUI>().text = "(" + (3 - totalLandings2) + " left)";
         }
     }
 }

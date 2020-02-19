@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour {
 
     public Transform planeTransform;
-    public Text heightText;
+    public TextMeshProUGUI heightText;
     public Text countdownText;
     private int height;
     private bool gameStarted = false;
@@ -21,6 +22,28 @@ public class GameController : MonoBehaviour {
     // Update is called once per frame
 
     private void Start()
+    {
+        InitialiseMusic();
+    }
+
+    private void FixedUpdate()
+    {
+        if (gameStarted)
+        {
+            InitialiseGame();
+            DisplayHeight();
+        }
+        else if (countdown)
+        {
+            countdownPage.SetActive(true);
+            // Hardcoded variable to stop plane moving during countdown
+            planeRigid.simulated = false;
+            StartCoroutine("CountdownTimer");
+            countdown = false;
+        }
+    }
+
+    private void InitialiseMusic()
     {
         if (GameObject.FindWithTag("music") != null)
             menuAudio = GameObject.FindWithTag("music").GetComponent<AudioSource>();
@@ -37,33 +60,27 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate()
+    private void InitialiseGame()
     {
-        if (gameStarted)
+        if (gameAudio != null && gameAudio.isPlaying == false && loops == 0)
+            gameAudio.Play();
+        if (countdownPage.activeSelf)
         {
-            if (gameAudio != null && gameAudio.isPlaying == false && loops == 0)
-                gameAudio.Play();
-            if (countdownPage.activeSelf)
-            {
-                countdownPage.SetActive(false);
-                planeRigid.simulated = true;
-            }
-            height = (int)planeTransform.position.z / 10;
-            height = height * 10;
-            if (height > 0)
-            {
-                height = 0;
-            }
-            height = height * 32;
-            heightText.text = "Altitude: " + (-height).ToString() + " ft";
+            countdownPage.SetActive(false);
+            planeRigid.simulated = true;
         }
-        else if (countdown)
+    }
+
+    private void DisplayHeight()
+    {
+        height = (int)planeTransform.position.z / 10;
+        height = height * 10;
+        if (height > 0)
         {
-            countdownPage.SetActive(true);
-            planeRigid.simulated = false;
-            StartCoroutine("CountdownTimer");
-            countdown = false;
+            height = 0;
         }
+        height = height * 32;
+        heightText.text = "Altitude: " + (-height).ToString() + " ft";
     }
 
     public void MuteMusic()
@@ -87,6 +104,7 @@ public class GameController : MonoBehaviour {
         StartCoroutine("MusicTimer");
     }
 
+    // Timer to stop the music looping after a landing
     private IEnumerator MusicTimer()
     {
         for (;;)
@@ -105,6 +123,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // Countdown before the game starts after user presses play
     private IEnumerator CountdownTimer()
     {
         for (;;)

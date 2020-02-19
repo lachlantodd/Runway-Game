@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour {
 
@@ -33,7 +34,8 @@ public class PlayerController : MonoBehaviour {
     private bool pressedLeft, pressedRight;
     public GameObject GameOverPage;
     public GameObject inputButtons;
-    public Text scoreText, highscoreText, tenPointText;
+    public Text scoreText;
+    public TextMeshProUGUI highscoreText, tenPointText, totalLandingsText;
     private static int score, highscore, tenPointLandings, totalLandings;
     private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite, shadowSprite;
@@ -153,8 +155,9 @@ public class PlayerController : MonoBehaviour {
                 totalLandings = PlayerPrefs.GetInt("landings3", 0);
                 break;
         }
-        highscoreText.text = "Best: " + highscore.ToString();
+        highscoreText.text = "Best Score: " + highscore.ToString();
         tenPointText.text = "10-Point Landings: " + tenPointLandings.ToString();
+        totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
         inputButtons.SetActive(true);
         arrow.SetActive(false);
     }
@@ -252,6 +255,8 @@ public class PlayerController : MonoBehaviour {
         transform.Translate(moveSpeed, 0, fallSpeed);
         moveSpeed += acceleration;
     } 
+
+    // Gives the appearance of the plane falling
     private void ShrinkPlane()
     {
         if (shrinkScale > 0.2)
@@ -376,6 +381,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         highscore = score;
                         PlayerPrefs.SetInt("highscore1", highscore);
+                        highscoreText.text = "Best Score: " + highscore.ToString();
                     }
                     if (score == 10)
                     {
@@ -384,6 +390,7 @@ public class PlayerController : MonoBehaviour {
                         PlayerPrefs.SetInt("10PointLandings1", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings1", totalLandings);
+                    totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
                     break;
 
                 case 2:
@@ -400,6 +407,7 @@ public class PlayerController : MonoBehaviour {
                         PlayerPrefs.SetInt("10PointLandings2", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings2", totalLandings);
+                    totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
                     break;
 
                 case 3:
@@ -416,6 +424,7 @@ public class PlayerController : MonoBehaviour {
                         PlayerPrefs.SetInt("10PointLandings3", tenPointLandings);
                     }
                     PlayerPrefs.SetInt("landings3", totalLandings);
+                    totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
                     break;
             }
         }
