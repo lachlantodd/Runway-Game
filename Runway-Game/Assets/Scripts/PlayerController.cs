@@ -135,9 +135,12 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y > 0)
             transform.Rotate(0, 0, Random.Range(0.0f, 45.0f));
         else
-            transform.Rotate(0, 0, Random.Range(270.0f, 315.0f));
+            transform.Rotate(0, 0, Random.Range(315.0f, 360.0f));
         shadow.transform.position = transform.position;
         shadow.transform.rotation = transform.rotation;
+        arrow.transform.rotation = transform.rotation;
+        // Next line is required since the arrow points up by default;
+        arrow.transform.Rotate(0, 0, 90);
     }
 
     private void InitialiseUI()
@@ -309,6 +312,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Explodes the plane when crashing
     private void Explode()
     {
         explosion.Stop();
