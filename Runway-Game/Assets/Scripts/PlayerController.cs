@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private float planeRotationInput;
     private const float rotationSpeedButton = 4f;
     private const float rotationSpeedTilt = 8f;
+    private float tiltStatus;
     private const float fallSpeed = 2f;
     private const float acceleration = 0.0003f;
     private const float deceleration = 0.005f; //old value which was good: 0.0025f
@@ -48,7 +49,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         InitialisePlane();
-        InitialiseUI();
+        InitialiseUI(); 
+        tiltStatus = PlayerPrefs.GetInt("tiltEnabled", 0);
     }
 
     private void FixedUpdate()
@@ -251,9 +253,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
-            shadow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
-            arrow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+            if (tiltStatus == 1)
+            {
+                transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+                shadow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+                arrow.transform.Rotate(0, 0, -Input.acceleration.x * rotationSpeedTilt);
+            }
         }
     }
 

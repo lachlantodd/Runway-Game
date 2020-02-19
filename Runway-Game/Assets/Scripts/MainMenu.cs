@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
 
     private AudioSource music;
+    private int tiltStatus;
+    public Text tiltButtonText;
 
     private void Awake()
     {
@@ -15,6 +16,29 @@ public class MainMenu : MonoBehaviour
         if (music != null && !music.isPlaying && PlayerPrefs.GetInt("music", 1) == 1)
         {
             music.Play();
+        }
+        if (tiltButtonText != null)
+        {
+            tiltStatus = PlayerPrefs.GetInt("tiltEnabled", 0);
+            if (tiltStatus == 0)
+                tiltButtonText.text = "Tilt Controls: Disabled";
+            else
+                tiltButtonText.text = "Tilt Controls: Enabled";
+        }
+    }
+
+    public void ToggleTilt()
+    {
+        tiltStatus = PlayerPrefs.GetInt("tiltEnabled", 0);
+        if (tiltStatus == 0)
+        {
+            PlayerPrefs.SetInt("tiltEnabled", 1);
+            tiltButtonText.text = "Tilt Controls: Enabled";
+        }
+        else
+        {
+            PlayerPrefs.SetInt("tiltEnabled", 0);
+            tiltButtonText.text = "Tilt Controls: Disabled";
         }
     }
 
