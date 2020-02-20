@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public Transform runway;
     public Transform runwayCarrier;
     private BoxCollider2D runwayBounds;
+    public BoxCollider2D carrierBounds;
     public BoxCollider2D runway1Bounds, runway2Bounds, runway3Bounds;
     private Vector2 planePositionRel;
     private float planeRotationRel;
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
     public GameObject shadow;
     public GameObject arrow;
     public ParticleSystem explosion;
+    public ParticleSystem splash;
 
     private void Start()
     {
@@ -330,9 +332,18 @@ public class PlayerController : MonoBehaviour
     // Explodes the plane when crashing
     private void Explode()
     {
-        explosion.Stop();
-        explosion.Clear();
-        explosion.Play();
+        if (carrierBounds.IsTouching(aircraftCollider))
+        {
+            explosion.Stop();
+            explosion.Clear();
+            explosion.Play();
+        }
+        else
+        {
+            splash.Stop();
+            splash.Clear();
+            splash.Play();
+        }
         GetComponent<SpriteRenderer>().sprite = null;
         shadow.GetComponent<SpriteRenderer>().sprite = null;
     }
@@ -431,7 +442,6 @@ public class PlayerController : MonoBehaviour
                             if (planePositionRel.x > (4.2f - (0.84f * i)))
                             {
                                 score = i;
-                                print("i1: " + i);
                                 break;
                             }
                         }
@@ -444,7 +454,6 @@ public class PlayerController : MonoBehaviour
                             if (planePositionRel.x < (-4.2f + (0.84f * i)))
                             {
                                 score = i;
-                                print("i2: " + i);
                                 break;
                             }
                         }
