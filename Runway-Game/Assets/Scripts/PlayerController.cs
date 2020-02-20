@@ -16,8 +16,15 @@ public class PlayerController : MonoBehaviour
     private const float rotationSpeedTilt = 8f;
     private float tiltStatus;
     private const float fallSpeed = 2f;
-    private const float acceleration = 0.0003f;
-    private const float deceleration = 0.005f; //old value which was good: 0.0025f
+    private float acceleration;
+    private const float accelerationlvl1 = 0.0003f;
+    private const float accelerationlvl2 = 0.0001f;
+    private const float accelerationlvl3 = 0.0003f;
+    private float deceleration;
+    private const float decelerationlvl1 = 0.005f; //old value which was good: 0.0025f
+    private const float decelerationlvl2 = 0.005f;
+    private const float decelerationlvl3 = 0.005f;
+    private const float carrierMoveSpeed = 0.045f;
     private float moveSpeed = -0.3f;
     private float scaleX, scaleY, scaleZ;
     private float shrinkScale = 1f;
@@ -25,19 +32,20 @@ public class PlayerController : MonoBehaviour
     private float shadowMoveSpeed = 0.035f;
     private float shadowAlpha = 1f;
     public Transform runway;
+    public Transform runwayCarrier;
     private BoxCollider2D runwayBounds;
     public BoxCollider2D runway1Bounds, runway2Bounds, runway3Bounds;
     private Vector2 planePositionRel;
     private float planeRotationRel;
     public BoxCollider2D planeCollider, jetCollider, shuttleCollider;
     private BoxCollider2D aircraftCollider;
-    private bool planeLanded;
-    private bool onRunway;
+    private bool planeLanded = false;
+    private bool onRunway = false;
     private bool pressedLeft, pressedRight;
     public GameObject GameOverPage;
     public GameObject inputButtons;
     public Text scoreText;
-    public TextMeshProUGUI highscoreText, tenPointText, totalLandingsText;
+    public TextMeshProUGUI highscoreText, totalLandingsText;
     private static int score, highscore, tenPointLandings, totalLandings;
     private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite;
@@ -57,31 +65,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!rigidBody.simulated || planeLanded)
+            return;
         CheckPlane();
         CheckRunway();
-    }
-
-    private void CheckRunway()
-    {
-        if (level == 0)
-        {
-            level = PlayerPrefs.GetInt("level", 1);
-        }
-        switch (level)
-        {
-            default:
-            case 1:
-
-                break;
-
-            case 2:
-
-                break;
-
-            case 3:
-
-                break;
-        }
     }
 
     private void InitialiseUI()
@@ -136,6 +123,8 @@ public class PlayerController : MonoBehaviour
                 this.planeCollider.enabled = true;
                 this.jetCollider.enabled = false;
                 this.shuttleCollider.enabled = false;
+                acceleration = accelerationlvl1;
+                deceleration = decelerationlvl1;
                 break;
 
             case 2:
@@ -147,6 +136,8 @@ public class PlayerController : MonoBehaviour
                 this.planeCollider.enabled = false;
                 this.jetCollider.enabled = true;
                 this.shuttleCollider.enabled = false;
+                acceleration = accelerationlvl2;
+                deceleration = decelerationlvl2;
                 break;
 
             case 3:
@@ -158,13 +149,13 @@ public class PlayerController : MonoBehaviour
                 this.planeCollider.enabled = false;
                 this.jetCollider.enabled = false;
                 this.shuttleCollider.enabled = true;
+                acceleration = accelerationlvl3;
+                deceleration = decelerationlvl3;
                 break;
         }
         GetComponent<SpriteRenderer>().sprite = planeSprite;
         shadow.GetComponent<SpriteRenderer>().sprite = planeSprite;
 
-        //startPositionX = 0;
-        //startPositionY = 0;
         transform.position = new Vector3(Random.Range(10.0f, 12.0f), Random.Range(-3.0f, 3.0f), -1000);
         if (transform.position.y > 0)
             transform.Rotate(0, 0, Random.Range(0.0f, 45.0f));
@@ -188,11 +179,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private void CheckPlane()
-    {
-        if (!rigidBody.simulated || planeLanded)
-            return;
+    {        
         planeRotationInput = Input.GetAxisRaw("Horizontal");
-        if (transform.position.z >= 0 && planeLanded == false)
+        if (transform.position.z >= 0 && !planeLanded)
         {
             LandPlane();
         }
@@ -227,6 +216,20 @@ public class PlayerController : MonoBehaviour
             {
                 arrow.SetActive(false);
             }
+        }
+    }
+
+    private void CheckRunway()
+    {
+        switch (level)
+        {
+            case 2:
+                runway.Translate(carrierMoveSpeed, 0, 0);
+                break;
+
+            case 3:
+
+                break;
         }
     }
 
@@ -343,7 +346,7 @@ public class PlayerController : MonoBehaviour
             Explode();
             moveSpeed = 0;
         }
-        if (moveSpeed < 0)
+        if ((moveSpeed < 0 && level == 1) || (moveSpeed < -0.07 && level == 2))
         {
             transform.Translate(moveSpeed, 0, 0);
         }
@@ -367,14 +370,14 @@ public class PlayerController : MonoBehaviour
         else
         {
             // Converting the plane's global position and rotation to local equivalents relative to the runway
-            planePositionRel = runway.InverseTransformPoint(transform.position);
-            planeRotationRel = transform.rotation.eulerAngles.z - runway.rotation.eulerAngles.z;
 
             totalLandings++;
             switch (level)
             {
                 default:
                 case 1:
+                    planePositionRel = runway.InverseTransformPoint(transform.position);
+                    planeRotationRel = transform.rotation.eulerAngles.z - runway.rotation.eulerAngles.z;
                     if (planeRotationRel < 90 || planeRotationRel > 270)
                     {
                         // Determining the zone (hence points) the plane landed in
@@ -418,14 +421,17 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case 2:
+                    planePositionRel = runwayCarrier.InverseTransformPoint(transform.position);
+                    planeRotationRel = transform.rotation.eulerAngles.z - runwayCarrier.rotation.eulerAngles.z;
                     if (planeRotationRel < 90 || planeRotationRel > 270)
                     {
                         // Determining the zone (hence points) the plane landed in
                         for (int i = 0; i <= 10; i++)
                         {
-                            if (planePositionRel.x > (2.51f - (0.502f * i)))
+                            if (planePositionRel.x > (4.2f - (0.84f * i)))
                             {
                                 score = i;
+                                print("i1: " + i);
                                 break;
                             }
                         }
@@ -433,11 +439,12 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         // Determining the zone (hence points) the plane landed in
-                        for (int i = 0; i <= 9; i++)
+                        for (int i = 0; i <= 10; i++)
                         {
-                            if (planePositionRel.x < (-2.51 + (0.502 * i)))
+                            if (planePositionRel.x < (-4.2f + (0.84f * i)))
                             {
                                 score = i;
+                                print("i2: " + i);
                                 break;
                             }
                         }
@@ -460,6 +467,8 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case 3:
+                    planePositionRel = runway.InverseTransformPoint(transform.position);
+                    planeRotationRel = transform.rotation.eulerAngles.z - runway.rotation.eulerAngles.z;
                     if (planeRotationRel < 90 || planeRotationRel > 270)
                     {
                         // Determining the zone (hence points) the plane landed in
@@ -475,9 +484,9 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         // Determining the zone (hence points) the plane landed in
-                        for (int i = 0; i <= 9; i++)
+                        for (int i = 0; i <= 10; i++)
                         {
-                            if (planePositionRel.x < (-2.51 + (0.502 * i)))
+                            if (planePositionRel.x < (-2.51 + (0.502f * i)))
                             {
                                 score = i;
                                 break;

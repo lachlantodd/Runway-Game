@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameController: {fileID: 1283629873}
   runway: {fileID: 767027874}
+  runwayCarrier: {fileID: 1815225999}
   runway1Bounds: {fileID: 2125935142}
   runway2Bounds: {fileID: 1815226000}
   runway3Bounds: {fileID: 1220270491}
@@ -253,7 +254,6 @@ MonoBehaviour:
   inputButtons: {fileID: 1228968446}
   scoreText: {fileID: 1226161114}
   highscoreText: {fileID: 968394012}
-  tenPointText: {fileID: 0}
   totalLandingsText: {fileID: 489373225}
   planeWhite: {fileID: 21300000, guid: 4f1ed6270e450ea4aad93cd370aa6ab4, type: 3}
   planeBlack: {fileID: 21300000, guid: 4abf14c8a56e7ca4e8db9e4563d01070, type: 3}
@@ -1237,12 +1237,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2db84303772845c41a9780e1cd1dccf1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f65ade5f84cafc4583305133cf53448, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.18, y: 0.52}
+  m_Size: {x: 12.05, y: 2.94}
   m_AdaptiveModeThreshold: 0.519
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1268,8 +1268,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5.02, y: 0.52}
+  m_AnchoredPosition: {x: -11.9, y: 0}
+  m_SizeDelta: {x: 12.5, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &812721924
 GameObject:
@@ -2012,7 +2012,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1220270491
 BoxCollider2D:
@@ -2391,7 +2391,7 @@ MonoBehaviour:
   backgroundLevel2: {fileID: 21300000, guid: 811c6b1ecd2dd764cb61ce2df5b6e1d0, type: 3}
   backgroundLevel3: {fileID: 21300000, guid: 187bfe0192b5b9a4ab21a1aed5e45a33, type: 3}
   runwayLevel1: {fileID: 21300000, guid: 10af2ac7ca6df834593e06f29fc0abde, type: 3}
-  runwayLevel2: {fileID: 21300000, guid: 2db84303772845c41a9780e1cd1dccf1, type: 3}
+  runwayLevel2: {fileID: 21300000, guid: 9f65ade5f84cafc4583305133cf53448, type: 3}
   runwayLevel3: {fileID: 21300000, guid: 10af2ac7ca6df834593e06f29fc0abde, type: 3}
 --- !u!1 &1316984113
 GameObject:
@@ -7167,7 +7167,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -7740,17 +7740,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815225998}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.08932887, w: 0.99600226}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 767027874}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 10.25}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -1.7, y: 0.28}
+  m_SizeDelta: {x: 8.4, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1815226000
 BoxCollider2D:
@@ -7765,7 +7765,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.045340776, y: -0.44998673}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -7776,7 +7776,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.166392, y: 0.30081052}
+  m_Size: {x: 8.4, y: 0.5}
   m_EdgeRadius: 0
 --- !u!1 &1820723398
 GameObject:
@@ -8090,7 +8090,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 5.02, y: 0.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &2125935142
 BoxCollider2D:
