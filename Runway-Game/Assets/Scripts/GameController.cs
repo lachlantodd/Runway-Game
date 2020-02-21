@@ -107,7 +107,7 @@ public class GameController : MonoBehaviour
     // Timer to stop the music looping after a landing
     private IEnumerator MusicTimer()
     {
-        for (; ; )
+        for (;;)
         {
             if (timeToGo > 0)
             {
@@ -126,7 +126,7 @@ public class GameController : MonoBehaviour
     // Countdown before the game starts after user presses play
     private IEnumerator CountdownTimer()
     {
-        for (; ; )
+        for (;;)
         {
             if (secondsToGo > 0)
             {
