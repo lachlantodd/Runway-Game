@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ public class MainMenu : MonoBehaviour
     private AudioSource music;
     private int tiltStatus;
     public Text tiltButtonText;
+    public Animator anim;
+    public SpriteRenderer black;
 
     private void Awake()
     {
@@ -75,7 +78,7 @@ public class MainMenu : MonoBehaviour
 
     public void OpenLevels()
     {
-        SceneManager.LoadScene(1);
+        StartCoroutine("Fader");
     }
 
     public void OpenSkins()
@@ -99,5 +102,12 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(3);
         PlayerPrefs.SetInt("level", 3);
+    }
+
+    private IEnumerator Fader()
+    {
+        //anim.SetBool("Fade", true);
+        yield return new WaitUntil(() => black.color.a == 1);
+        SceneManager.LoadScene(1);
     }
 }

@@ -892,7 +892,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Unlock: Milkyway
+  m_text: 'Unlock: Mars
 
     One 10-point landing'
   m_isRightToLeft: 0
@@ -963,7 +963,7 @@ MonoBehaviour:
   m_margin: {x: 0.8345821, y: 0, z: 1.7095184, w: -1.4760165}
   m_textInfo:
     textComponent: {fileID: 1216952930}
-    characterCount: 37
+    characterCount: 33
     spriteCount: 0
     spaceCount: 4
     wordCount: 5
@@ -1181,6 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23b80a819280fd4a8ba6fe7c2343708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tiltButtonText: {fileID: 0}
 --- !u!224 &1289975113
 RectTransform:
   m_ObjectHideFlags: 0
