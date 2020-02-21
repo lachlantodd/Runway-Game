@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckRunway()
     {
-        if (planeLanded)
+        if (planeLanded || !rigidBody.simulated)
             return;
         switch (level)
         {
@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case 3:
-                if (!planeLanding && rigidBody.simulated)
+                if (!planeLanding)
                 {
                     runway.Rotate(0, 0, planetRotationSpeed);
                 }
