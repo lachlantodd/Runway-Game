@@ -9,7 +9,6 @@ public class MainMenu : MonoBehaviour
     private AudioSource music;
     private int tiltStatus;
     public Text tiltButtonText;
-    public Animator anim;
     public SpriteRenderer black;
 
     private void Awake()
@@ -78,7 +77,8 @@ public class MainMenu : MonoBehaviour
 
     public void OpenLevels()
     {
-        StartCoroutine("Fader");
+        //StartCoroutine("Fader");
+        SceneManager.LoadScene(1);
     }
 
     public void OpenSkins()
