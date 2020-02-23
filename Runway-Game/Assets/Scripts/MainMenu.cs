@@ -9,7 +9,9 @@ public class MainMenu : MonoBehaviour
     private AudioSource music;
     private int tiltStatus;
     public Text tiltButtonText;
-    public SpriteRenderer black;
+    public Image black;
+    public Animator anim;
+    private int scene;
 
     private void Awake()
     {
@@ -61,12 +63,14 @@ public class MainMenu : MonoBehaviour
 
     public void OpenHelpMenu()
     {
-        SceneManager.LoadScene(4);
+        scene = 4;
+        StartCoroutine("Fader");
     }
 
     public void OpenMainMenu()
     {
-        SceneManager.LoadScene(0);
+        scene = 0;
+        StartCoroutine("Fader");
     }
 
     public void ExitGame()
@@ -77,37 +81,43 @@ public class MainMenu : MonoBehaviour
 
     public void OpenLevels()
     {
-        //StartCoroutine("Fader");
-        SceneManager.LoadScene(1);
+        scene = 1;
+        StartCoroutine("Fader");
     }
 
     public void OpenSkins()
     {
-        SceneManager.LoadScene(2);
+        scene = 2;
+        StartCoroutine("Fader");
     }
 
     public void SelectLevel1()
     {
-        SceneManager.LoadScene(3);
+        scene = 3;
+        StartCoroutine("Fader");
         PlayerPrefs.SetInt("level", 1);
     }
 
     public void SelectLevel2()
     {
-        SceneManager.LoadScene(3);
+
+        scene = 3;
+        StartCoroutine("Fader");
         PlayerPrefs.SetInt("level", 2);
     }
 
     public void SelectLevel3()
     {
-        SceneManager.LoadScene(3);
+
+        scene = 3;
+        StartCoroutine("Fader");
         PlayerPrefs.SetInt("level", 3);
     }
 
     private IEnumerator Fader()
     {
-        //anim.SetBool("Fade", true);
+        anim.SetBool("Fade", true);
         yield return new WaitUntil(() => black.color.a == 1);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(scene);
     }
 }

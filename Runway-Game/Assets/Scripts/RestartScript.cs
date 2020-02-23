@@ -6,20 +6,26 @@ using UnityEngine.UI;
 
 public class RestartScript : MonoBehaviour
 {
-    private int level;
-
-    private void Start()
-    {
-        level = PlayerPrefs.GetInt("level", 1);
-    }
+    private int scene;
+    public Animator anim;
+    public Image black;
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(3);
+        scene = 3;
+        StartCoroutine("Fader");
     }
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene(0);
+        scene = 0;
+        StartCoroutine("Fader");
+    }
+
+    private IEnumerator Fader()
+    {
+        anim.SetBool("Fade", true);
+        yield return new WaitUntil(() => black.color.a == 1);
+        SceneManager.LoadScene(scene);
     }
 }
