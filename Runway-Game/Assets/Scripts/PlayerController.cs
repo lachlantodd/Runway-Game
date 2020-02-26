@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private Quaternion startRotation;
     private float planeRotationInput;
     private const float rotationSpeedButton = 4f;
-    private const float rotationSpeedTilt = 16f; // First Number: 8;
+    private const float rotationSpeedTilt = 10f; // Original Number: 8f
     private float tiltStatus;
     private const float fallSpeed = 2f;
     private float acceleration;
