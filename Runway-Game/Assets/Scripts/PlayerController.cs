@@ -46,8 +46,8 @@ public class PlayerController : MonoBehaviour
     public GameObject GameOverPage;
     public GameObject inputButtons;
     public Text scoreText;
-    public TextMeshProUGUI highscoreText, totalLandingsText;
-    private static int score, highscore, tenPointLandings, totalLandings;
+    public TextMeshProUGUI highscoreText, totalLandingsText, totalAttemptsText;
+    private static int score, highscore, tenPointLandings, totalLandings, totalAttempts;
     private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite;
     public Sprite planeWhite, planeBlack, jetGrey, jetBlack, shuttleWhite, shuttleBlack;
@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     public GameObject blackHole;
     public CircleCollider2D planetBounds;
     private bool implode = false;
+    private bool exploded = false;
     private Vector3 startSize = new Vector3(0, 0, 0);
     private Vector3 endSize = new Vector3(1, 1, 1);
 
@@ -90,12 +91,14 @@ public class PlayerController : MonoBehaviour
                 highscore = PlayerPrefs.GetInt("highscore1", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings1", 0);
                 totalLandings = PlayerPrefs.GetInt("landings1", 0);
+                totalAttempts = PlayerPrefs.GetInt("attempts1", 0);
                 break;
 
             case 2:
                 highscore = PlayerPrefs.GetInt("highscore2", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings2", 0);
                 totalLandings = PlayerPrefs.GetInt("landings2", 0);
+                totalAttempts = PlayerPrefs.GetInt("attempts2", 0);
                 // Lowering the Game Over score text so it is more visible (lvl 2 only)
                 scoreText.transform.position = new Vector2(0, 0.5f);
                 break;
@@ -104,6 +107,7 @@ public class PlayerController : MonoBehaviour
                 highscore = PlayerPrefs.GetInt("highscore3", 0);
                 tenPointLandings = PlayerPrefs.GetInt("10PointLandings3", 0);
                 totalLandings = PlayerPrefs.GetInt("landings3", 0);
+                totalAttempts = PlayerPrefs.GetInt("attempts3", 0);
                 break;
         }
         // If a 10-point landing has been achieved, replace Best Score: with 10-Point Landings:
@@ -112,6 +116,7 @@ public class PlayerController : MonoBehaviour
         else
             highscoreText.text = "10-Point Landings: " + tenPointLandings.ToString();
         totalLandingsText.text = "Total Landings: " + totalLandings.ToString();
+        totalAttemptsText.text = "Total Attempts: " + totalAttempts.ToString();
         // Enable Left and Right plane control buttons
         inputButtons.SetActive(true);
         // Initially hide the arrow that shows when you exit the screen area
@@ -398,12 +403,21 @@ public class PlayerController : MonoBehaviour
             arrow.SetActive(false);
             ShowScore();
             gameController.EndMusic();
+            totalAttempts++;
+            totalAttemptsText.text = "Total Attempts: " + totalAttempts.ToString();
+            if (level == 1)
+                PlayerPrefs.SetInt("attempts1", totalAttempts);
+            else if (level == 2)
+                PlayerPrefs.SetInt("attempts2", totalAttempts);
+            else if (level == 3)
+                PlayerPrefs.SetInt("attempts3", totalAttempts);
         }
     }
 
     // Explodes the plane when crashing
     private void Explode()
     {
+        exploded = true;
         switch (level)
         {
             default:
@@ -604,6 +618,8 @@ public class PlayerController : MonoBehaviour
             }
             PlayerPrefs.Save();
         }
+        if (score == 0 && !exploded)
+            Explode();
         scoreText.text = "Score: " + score.ToString();
         score = 0;
     }

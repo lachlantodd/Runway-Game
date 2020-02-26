@@ -21,6 +21,11 @@ public class MainMenu : MonoBehaviour
         if (music != null && !music.isPlaying && PlayerPrefs.GetInt("music", 1) == 1)
         {
             music.Play();
+            muteText.text = "Mute";
+        }
+        else if (muteText != null && PlayerPrefs.GetInt("music", 1) == 0)
+        {
+            muteText.text = "Unmute";
         }
         if (tiltButtonText != null)
         {
