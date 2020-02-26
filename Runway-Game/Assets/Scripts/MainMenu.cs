@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
 
     private AudioSource music;
+    public AudioSource buttonSound;
     public Text muteText;
     private int tiltStatus;
     public Text tiltButtonText;
@@ -35,6 +36,12 @@ public class MainMenu : MonoBehaviour
             else
                 tiltButtonText.text = "Tilt Controls: Enabled";
         }
+    }
+
+    public void PlayButtonSound()
+    {
+        if (PlayerPrefs.GetInt("music", 1) == 1)
+            buttonSound.Play();
     }
 
     public void ToggleTilt()

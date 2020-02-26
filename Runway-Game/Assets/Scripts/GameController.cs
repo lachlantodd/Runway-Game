@@ -16,14 +16,17 @@ public class GameController : MonoBehaviour
     public Rigidbody2D planeRigid;
     private int secondsToGo = 3, timeToGo = 3;
     public GameObject background;
-    private AudioSource gameAudio, menuAudio;
+    private AudioSource menuAudio, gameAudio;
+    public AudioSource musiclvl1, musiclvl2, musiclvl3;
     public Text muteText;
     private int loops = 0;
+    private int level;
 
     // Update is called once per frame
 
     private void Start()
     {
+        level = PlayerPrefs.GetInt("level", 1);
         InitialiseMusic();
     }
 
@@ -50,7 +53,22 @@ public class GameController : MonoBehaviour
             menuAudio = GameObject.FindWithTag("music").GetComponent<AudioSource>();
         if (menuAudio != null)
             menuAudio.Stop();
-        gameAudio = GetComponent<AudioSource>();
+        switch (level)
+        {
+            default:
+            case 1:
+                gameAudio = musiclvl1;
+                break;
+
+            case 2:
+                gameAudio = musiclvl2;
+                break;
+
+            case 3:
+                gameAudio = musiclvl3;
+                break;
+
+        }
         if (PlayerPrefs.GetInt("music", 1) == 1)
         {
             muteText.text = "Mute";

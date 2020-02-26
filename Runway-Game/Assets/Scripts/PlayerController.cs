@@ -243,21 +243,21 @@ public class PlayerController : MonoBehaviour
             {
                 arrow.SetActive(true);
                 arrow.transform.position = new Vector2(transform.position.x, transform.position.y);
-                if (arrow.transform.position.x < -15)
+                if (arrow.transform.position.x < -12)
                 {
-                    arrow.transform.position = new Vector2(-15, arrow.transform.position.y);
+                    arrow.transform.position = new Vector2(-12, arrow.transform.position.y);
                 }
-                else if (arrow.transform.position.x > 15)
+                else if (arrow.transform.position.x > 12)
                 {
-                    arrow.transform.position = new Vector2(15, arrow.transform.position.y);
+                    arrow.transform.position = new Vector2(12, arrow.transform.position.y);
                 }
-                if (arrow.transform.position.y < -6)
+                if (arrow.transform.position.y < -5)
                 {
-                    arrow.transform.position = new Vector2(arrow.transform.position.x, -6);
+                    arrow.transform.position = new Vector2(arrow.transform.position.x, -5);
                 }
-                else if (arrow.transform.position.y > 6)
+                else if (arrow.transform.position.y > 5)
                 {
-                    arrow.transform.position = new Vector2(arrow.transform.position.x, 6);
+                    arrow.transform.position = new Vector2(arrow.transform.position.x, 5);
                 }
             }
             else
