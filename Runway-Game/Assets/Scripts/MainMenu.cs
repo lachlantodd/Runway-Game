@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
 
     private AudioSource music;
+    public Text muteText;
     private int tiltStatus;
     public Text tiltButtonText;
     public Image black;
@@ -51,11 +52,13 @@ public class MainMenu : MonoBehaviour
         if (music != null && music.isPlaying)
         {
             music.Stop();
+            muteText.text = "Unmute";
             PlayerPrefs.SetInt("music", 0);
         }
         else if (music != null)
         {
             music.Play();
+            muteText.text = "Mute";
             PlayerPrefs.SetInt("music", 1);
         }
         PlayerPrefs.Save();

@@ -66,7 +66,7 @@ public class SkinsMenu : MonoBehaviour
         if (2 - tenPointLandingslvl2 > 0)
         {
             jetText.text = "(" + (2 - tenPointLandingslvl2) + " left)";
-            planeTextObj.SetActive(true);
+            jetTextObj.SetActive(true);
             jetBlack.GetComponent<Button>().interactable = false;
         }
         else
@@ -78,7 +78,7 @@ public class SkinsMenu : MonoBehaviour
         if (1 - tenPointLandingslvl3 > 0)
         {
             shuttleText.text = "(" + (1 - tenPointLandingslvl3) + " left)";
-            planeTextObj.SetActive(true);
+            shuttleTextObj.SetActive(true);
             shuttleBlack.GetComponent<Button>().interactable = false;
         }
         else
