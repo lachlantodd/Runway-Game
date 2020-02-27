@@ -1,4 +1,4 @@
-# Runway-Game
+# The Plane Game
 This project has taken around 6-8 months of full-time development. It is an arcade game now released on the Google Play Store for free, with no ads or microtransactions.
 https://play.google.com/store/apps/details?id=com.DistractionMachine.ThePlaneGame
 
@@ -9,3 +9,5 @@ I started this project to teach myself C# through hands-on methods. Before start
 All assets within this project are my creation. I challenged myself to do it all myself, and had to learn how to create art and music along the way (which proved to be a real challenge indeed).
 
 My biggest lesson from this project was of scope creep. My initial design plan was not comprehensive enough and so I came up with features as I went along. This was a mistake. I put more features into this game than I would have if I realised the complexity and time cost it would take. Nevertheless, I have learnt my lesson and will take this experience with me throughout my future projects.
+
+NOTE: The source code, artwork and music contained within this project is copyright protected as of 2019 to Distraction Machine.
