@@ -10,4 +10,4 @@ All assets within this project are my creation. I challenged myself to do it all
 
 My biggest lesson from this project was of scope creep. My initial design plan was not comprehensive enough and so I came up with features as I went along. This was a mistake. I put more features into this game than I would have if I realised the complexity and time cost it would take. Nevertheless, I have learnt my lesson and will take this experience with me throughout my future projects.
 
-NOTE: The source code, artwork and music contained within this project is copyright protected as of 2019 to Distraction Machine.
+NOTE: The source code, artwork and music contained within this project is Copyright protected as of 2019 to Lachlan Todd, Distraction Machine.
