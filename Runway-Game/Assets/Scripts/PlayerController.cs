@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public GameController gameController;
+    public RestartScript restartScript;
     private Rigidbody2D rigidBody;
     private Quaternion startRotation;
     private float planeRotationInput;
@@ -43,10 +44,14 @@ public class PlayerController : MonoBehaviour
     private bool planeLanding = false;
     private bool onRunway = false;
     private bool pressedLeft, pressedRight;
-    public GameObject GameOverPage;
+    public GameObject GameOverPage, GamePage;
     public GameObject inputButtons;
     public Text scoreText;
     public TextMeshProUGUI highscoreText, totalLandingsText, totalAttemptsText;
+    public Text goalTextWhite, goalTextBlack;
+    public GameObject goalCompletePage;
+    public Text congratsTextWhite, congratsTextBlack, stayButtonText, goButtonText, hintText;
+    public SpriteRenderer oldSkin, newSkin;
     private static int score, highscore, tenPointLandings, totalLandings, totalAttempts;
     private int level, plane1Type, plane2Type, plane3Type;
     private Sprite planeSprite;
@@ -63,6 +68,7 @@ public class PlayerController : MonoBehaviour
     private bool exploded = false;
     private Vector3 startSize = new Vector3(0, 0, 0);
     private Vector3 endSize = new Vector3(1, 1, 1);
+    private int state1, state2;
 
     private void Start()
     {
@@ -71,6 +77,8 @@ public class PlayerController : MonoBehaviour
         InitialiseUI();
         InitialisePlane();
         InitialiseRunway();
+        UpdateGoalText();
+        CheckGoalStates();
     }
 
     private void FixedUpdate()
@@ -446,7 +454,7 @@ public class PlayerController : MonoBehaviour
                 implode = true;
                 break;
         }
-        
+
         GetComponent<SpriteRenderer>().sprite = null;
         shadow.GetComponent<SpriteRenderer>().sprite = null;
     }
@@ -462,6 +470,227 @@ public class PlayerController : MonoBehaviour
             runway.localScale = Vector3.Lerp(runway.localScale, startSize, Time.deltaTime);
         }
         blackHole.transform.Rotate(0, 0, -planetRotationSpeed * 2);
+    }
+
+    private void CheckGoalStates()
+    {
+        switch (level)
+        {
+            default:
+            case 1:
+                state1 = PlayerPrefs.GetInt("state1lvl1", 0);
+                state2 = PlayerPrefs.GetInt("state2lvl1", 0);
+                break;
+
+            case 2:
+                state1 = PlayerPrefs.GetInt("state1lvl2", 0);
+                state2 = PlayerPrefs.GetInt("state2lvl2", 0);
+                break;
+
+            case 3:
+                state2 = PlayerPrefs.GetInt("state2lvl3", 0);
+                break;
+        }
+    }
+
+    private void UpdateGoalText()
+    {
+        switch (level)
+        {
+            default:
+            case 1:
+                if (totalLandings < 3)
+                {
+                    if (totalLandings == 2)
+                    {
+                        goalTextWhite.text = "Goal: Land (" + (3 - totalLandings) + " more time)\nUnlock: Level 2";
+                    }
+                    else
+                    {
+                        goalTextWhite.text = "Goal: Land (" + (3 - totalLandings) + " more times)\nUnlock: Level 2";
+                    }
+                }
+                else
+                {
+                    if (tenPointLandings < 3)
+                    {
+                        if (tenPointLandings == 2)
+                            goalTextWhite.text = "Goal: 10-points (" + (3 - tenPointLandings) + " more time)\nUnlock: New Plane skin";
+                        else
+                            goalTextWhite.text = "Goal: 10-points (" + (3 - tenPointLandings) + " more times)\nUnlock: New Plane skin";
+                    }
+                    else
+                    {
+                        goalTextWhite.enabled = false;
+                    }
+                }
+                break;
+
+            case 2:
+                if (totalLandings < 3)
+                {
+                    if (totalLandings == 2)
+                    {
+                        goalTextWhite.text = "Goal: Land (" + (3 - totalLandings) + " more time)\nUnlock: Level 3";
+                    }
+                    else
+                    {
+                        goalTextWhite.text = "Goal: Land (" + (3 - totalLandings) + " more times)\nUnlock: Level 3";
+                    }
+                    
+                }
+                else
+                {
+                    if (tenPointLandings < 2)
+                    {
+                        if (tenPointLandings == 1)
+                            goalTextWhite.text = "Goal: 10-points (" + (2 - tenPointLandings) + " more time)\nUnlock: New Jet skin";
+                        else
+                            goalTextWhite.text = "Goal: 10-points (" + (2 - tenPointLandings) + " more times)\nUnlock: New Jet skin";
+                    }
+                    else
+                    {
+                        goalTextWhite.enabled = false;
+                    }
+                }
+                break;
+
+            case 3:
+                if (tenPointLandings < 1)
+                    goalTextWhite.text = "Goal: 10-points (" + (1 - tenPointLandings) + " more time)\nUnlock: New Shuttle skin";
+                else
+                    goalTextWhite.enabled = false;
+                break;
+        }
+        if (goalTextWhite.enabled == false)
+            goalTextBlack.enabled = false;
+        goalTextBlack.text = goalTextWhite.text;
+    }
+
+    private void CheckGoal()
+    {
+        oldSkin.sprite = null;
+        newSkin.sprite = null;
+        switch (level)
+        {
+            default:
+            case 1:
+                if (tenPointLandings == 3 && state2 == 0)
+                {
+                    PlayerPrefs.SetInt("state2lvl1", 1);
+                    GameOverPage.SetActive(false);
+                    GamePage.SetActive(false);
+                    goalCompletePage.SetActive(true);
+                    oldSkin.sprite = planeWhite;
+                    newSkin.sprite = planeBlack;
+                    congratsTextWhite.text = "Congratulations! You unlocked a new Plane skin\n\n\n\n\nWould you like to try it out now?";
+                    stayButtonText.text = "No Thanks";
+                    goButtonText.text = "Yes Please";
+                    hintText.text = "(You can change this in the menu later)";
+                }
+                if (totalLandings == 3 && state1 == 0)
+                {
+                    PlayerPrefs.SetInt("state1lvl1", 1);
+                    GameOverPage.SetActive(false);
+                    GamePage.SetActive(false);
+                    goalCompletePage.SetActive(true);
+                    congratsTextWhite.text = "Congratulations! You unlocked Level 2 (Pacific Ocean)\n\n\n\n\nWould you like to try it out now?";
+                    stayButtonText.text = "Stay Here";
+                    goButtonText.text = "Level 2";
+                    if (tenPointLandings < 3)
+                        hintText.text = "(There is still 1 more goal for this level)";
+                    else
+                        hintText.text = "";
+                }
+                break;
+
+            case 2:
+                if (tenPointLandings == 2 && state2 == 0)
+                {
+                    PlayerPrefs.SetInt("state2lvl2", 1);
+                    GameOverPage.SetActive(false);
+                    GamePage.SetActive(false);
+                    goalCompletePage.SetActive(true);
+                    oldSkin.sprite = jetGrey;
+                    newSkin.sprite = jetBlack;
+                    congratsTextWhite.text = "Congratulations! You unlocked a new Jet skin\n\n\n\n\nWould you like to try it out now?";
+                    stayButtonText.text = "No Thanks";
+                    goButtonText.text = "Yes Please";
+                    hintText.text = "(You can change this in the menu later)";
+                }
+                if (totalLandings == 3 && state1 == 0)
+                {
+                    PlayerPrefs.SetInt("state1lvl2", 1);
+                    GameOverPage.SetActive(false);
+                    GamePage.SetActive(false);
+                    goalCompletePage.SetActive(true);
+                    congratsTextWhite.text = "Congratulations! You unlocked Level 3 (Mars)\n\n\n\n\nWould you like to try it out now?";
+                    stayButtonText.text = "Stay Here";
+                    goButtonText.text = "Level 3";
+                    if (tenPointLandings < 2)
+                        hintText.text = "(There is still 1 more goal for this level)";
+                    else
+                        hintText.text = "";
+                }
+                break;
+
+            case 3:
+
+                if (tenPointLandings == 1 && state2 == 0)
+                {
+                    PlayerPrefs.SetInt("state2lvl3", 1);
+                    GameOverPage.SetActive(false);
+                    GamePage.SetActive(false);
+                    goalCompletePage.SetActive(true);
+                    oldSkin.sprite = shuttleWhite;
+                    newSkin.sprite = shuttleBlack;
+                    congratsTextWhite.text = "Congratulations! You unlocked a new Shuttle skin\n\n\n\n\nWould you like to try it out now?";
+                    stayButtonText.text = "No Thanks";
+                    goButtonText.text = "Yes Please";
+                    hintText.text = "(You can change this in the menu later)";
+                }
+                break;
+        }
+        congratsTextBlack.text = congratsTextWhite.text;
+    }
+
+    public void HandleGoalButtons(bool go)
+    {
+        switch (level)
+        {
+            default:
+            case 1:
+                if (go)
+                {
+                    if (totalLandings == 3)
+                        PlayerPrefs.SetInt("level", 2);
+                    else if (tenPointLandings == 3)
+                        PlayerPrefs.SetInt("plane1", 1);
+                }
+                restartScript.RestartLevel();
+                break;
+
+            case 2:
+                if (go)
+                {
+                    if (totalLandings == 3)
+                        PlayerPrefs.SetInt("level", 3);
+                    else if (tenPointLandings == 2)
+                        PlayerPrefs.SetInt("plane2", 1);
+                }
+                restartScript.RestartLevel();
+                break;
+
+            case 3:
+                if (go)
+                {
+                    if (tenPointLandings == 1)
+                        PlayerPrefs.SetInt("plane3", 1);
+                }
+                restartScript.RestartLevel();
+                break;
+        }
+        
     }
 
     private void ShowScore()
@@ -622,5 +851,7 @@ public class PlayerController : MonoBehaviour
             Explode();
         scoreText.text = "Score: " + score.ToString();
         score = 0;
+        CheckGoal();
+        UpdateGoalText();
     }
 }
