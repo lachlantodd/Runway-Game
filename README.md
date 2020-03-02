@@ -1,6 +1,8 @@
 # The Plane Game
-This project has taken around 6-8 months of full-time development. It is an arcade game now released on the Google Play Store for free, with no ads or microtransactions.
+This project has taken around 6-8 months of full-time development. It is an arcade game now released on Android and iOS for free, with no ads or microtransactions.
+
 https://play.google.com/store/apps/details?id=com.DistractionMachine.ThePlaneGame
+https://apps.apple.com/au/app/id1501082836
 
 I wanted to create a game that would stand out, and not be a cash grab like the majority of apps on the store. By releasing this for free with no ads or revenue generation, I aimed to give something back to the community.
 
